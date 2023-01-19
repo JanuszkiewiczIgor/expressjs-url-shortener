@@ -1,9 +1,3 @@
-/* TODO
-
-    fix pushing to db (dups)
-
-*/
-
 const fs = require("fs");
 const db_path = "./database.json";
 
@@ -11,7 +5,19 @@ const readAll = () => {
     return require(db_path);
 };
 
+const checkIfDup = (endpoint) => {
+    let isDuped = false;
+    const db = readAll();
+
+    db.forEach(e => {
+        if(e.endpoint == endpoint) isDuped = true;
+    });
+
+    return isDuped;
+};
+
 const pushToDatabase = (endpoint, url) => {
+
     let db = readAll();
 
     const obj = {
@@ -24,6 +30,8 @@ const pushToDatabase = (endpoint, url) => {
     fs.writeFile(db_path, JSON.stringify(db), (err) => {
         if(err) console.error(err);
     });
+    
+    return;
 };
 
 const getUrlByEndpoint = (endpoint) => {
@@ -40,6 +48,7 @@ const getUrlByEndpoint = (endpoint) => {
 
 module.exports = {
     readAll,
+    checkIfDup,
     pushToDatabase,
     getUrlByEndpoint,
 };

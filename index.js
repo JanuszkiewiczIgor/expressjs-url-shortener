@@ -11,7 +11,10 @@ app.post("/create", (req, res) => {
     const endpoint = req.body.endpoint;
     const url = req.body.url;
 
+    if(db.checkIfDup(endpoint)) return res.send();
+
     db.pushToDatabase(endpoint, url);
+    res.json();
     res.status(200);
 });
 
@@ -30,5 +33,5 @@ app.get("/:endpoint", (req, res) => {
 
 app.listen(port, (err) => {
     if(err) throw err;
-    console.log(`Server is listening on port ${port}`);
+    console.log(`port ${port}`);
 });
